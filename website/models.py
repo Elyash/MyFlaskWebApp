@@ -6,9 +6,9 @@ from sqlalchemy.sql import func
 class Gift(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(1000))
-    link = db.Column(db.String(10000))
+    description = db.Column(db.String(10000))
+    image = db.Column(db.String(10000))
     price = db.Column(db.Float)
-    notes = db.Column(db.String(10000))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 

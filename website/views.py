@@ -14,24 +14,26 @@ views = Blueprint('views', __name__)
 def home():
     if request.method == 'POST':
         name = request.form.get('gift_name')
-        link = request.form.get('gift_link')
+        description = request.form.get('gift_description')
+        image = request.form.get('gift_image')
         price = request.form.get('gift_price')
-        notes = request.form.get('gift_notes')
+
 
         if len(name) < 2:
             flash(f'Invalid gift name. Should be longer then {len(name)} chars', category='error')
             return render_template("home.html", user=current_user)
         
-        try:
-            status = requests.get(link, timeout=2000).status_code
-        except requests.exceptions.RequestException as e:
-            flash(f'Invalid link. Details: {e.args}', category='error')
-            return render_template("home.html", user=current_user)
-        if status != 200:
-            flash(f'Gift link is unreachable, status code: {status}', category='error')
+        if image:
+            try:
+                status = requests.get(image, timeout=2000).status_code
+            except requests.exceptions.RequestException as e:
+                flash(f'Invalid image link. Details: {e.args}', category='error')
+                return render_template("home.html", user=current_user)
+            if status != 200:
+                flash(f'Gift link is unreachable, status code: {status}', category='error')
             return render_template("home.html", user=current_user)
         
-        if price is '':
+        if not price:
             price = -1
         try:
             price = float(price)
@@ -39,7 +41,9 @@ def home():
             flash(f'Invalid price. Details: {e.args}', category='error')
             return render_template("home.html", user=current_user)
 
-        new_gift = Gift(name=name, link=link, price=price, notes=notes, user_id=current_user.id)  #providing the schema for the gift 
+        new_gift = Gift(
+            name=name, image=image, price=price, description=description, user_id=current_user.id
+        )  #providing the schema for the gift 
         db.session.add(new_gift) #adding the gift to the database
         db.session.commit()
         flash('Gift added!', category='success')    

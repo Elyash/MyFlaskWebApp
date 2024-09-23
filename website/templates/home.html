@@ -1,10 +1,10 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
 %}
-<h1 align="center">Gifts</h1>
+<h1 align="center">My Gifts</h1>
 <ul class="list-group list-group-flush" id="gifts">
   {% for gift in user.gifts %}
   <li class="list-group-item">
-    {{ gift.data }}
+    {{ gift.name }}
     <button type="button" class="close" onClick="deleteGift({{ gift.id }})">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -14,9 +14,9 @@
 <form method="POST" style="background-color: #423f3f; padding: 40px; border-radius: 10px; box-shadow: 15px 15px rgba(52, 30, 30, 0.1);">
   <h2 content="width=device-width, initial-scale=1.0" align="center" style="background-color: blue; color: #fff; border-radius: 5px;">Add a new gift</h2>
   <input name="gift_name" type="text" id="gift_name" class="form-control" placeholder="Enter name" required></input>
-  <input name="gift_link" type="url" id="gift_link" class="form-control" placeholder="Enter link" required></input>
+  <textarea name="gift_description" id="gift_description" class="form-control" placeholder="Enter description (Optional)"></textarea>
+  <input name="gift_image" type="url" id="gift_link" class="form-control" placeholder="Enter image link (Optional)"></input>
   <input name="gift_price" type="number" id="gift_price" class="form-control" placeholder="Enter estimated price (Optional)" min="0.00" max="10000.00" step="0.01" />
-  <textarea name="gift_notes" id="gift_notes" class="form-control" placeholder="Additional information (Optional)"></textarea>
   <br />
   <div align="center">
     <button type="submit" class="btn btn-primary">Add Gift</button>
